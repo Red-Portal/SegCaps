@@ -69,8 +69,9 @@ def main():
     data, label = load_data("./dataset/imgs", "./dataset/masks")
     print("data: ", len(data), " shape: ", data[0].shape)
     data_iter = data_manager(data[500:], label[500:], data[:500], label[:500])
-    x_in = tf.placeholder(tf.float32, [None, 512, 256])
-    y_in = tf.placeholder(tf.float32, [None, 512, 256])
+    shape = data[0].shape
+    x_in = tf.placeholder(tf.float32, [None, shape[0], shape[1]])
+    y_in = tf.placeholder(tf.float32, [None, shape[0], shape[1]])
 
     x = tf.expand_dims(x_in , axis=-1)
     model = CapsNetR3(x)
