@@ -15,8 +15,8 @@ from capsule_layers import *
 def CapsNetR3(inputs):
     # Layer 1: Just a conventional Conv2D layer
     inputs = tf.layers.conv2d(inputs, filters=16, kernel_size=5, strides=1,
-                             padding='same', activation='relu', name='conv1')
-
+                              padding='same', activation=tf.nn.relu, name='conv1')
+    
     B, H, W, C = tf.shape(conv1)
     inputs = tf.reshape(inputs, shape=[B, H, W, 1, C])
 
