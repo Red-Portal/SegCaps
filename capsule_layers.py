@@ -48,7 +48,7 @@ def mask(inputs, mask=None, name="mask"):
 
 def conv2d_capsule(inputs, kernel_size, num_capsules, num_atoms,
                    strides=1, padding='same', routings=3,
-                   initializer=tf.initializer.random_normal,
+                   initializer=tf.initializers.random_normal,
                    name="conv2d_capsule"):
 
     assert len(inputs.shape) == 5, \
@@ -90,7 +90,7 @@ def conv2d_capsule(inputs, kernel_size, num_capsules, num_atoms,
 
 def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scaling=2,
                              upsamp_type='deconv', padding='same', routings=3,
-                             initializer=tf.initializer.random_normal,
+                             initializer=tf.initializers.random_normal,
                              name="conv2d_transpose_capsule"):
     assert len(inputs.shape) == 5, \
         "The input Tensor should have shape= "\
