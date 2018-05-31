@@ -67,7 +67,7 @@ def main():
     total_iteration = 1000
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
-    print("data: ", len(data))
+    print("data: ", len(data), " shape: ", data[0].shape)
     data_iter = data_manager(data[500:], label[500:], data[:500], label[:500])
     x_in = tf.placeholder(tf.float32, [None, 512, 256])
     y_in = tf.placeholder(tf.float32, [None, 512, 256])
