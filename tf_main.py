@@ -36,7 +36,7 @@ class data_manager:
         return self.valid_data, self.valid_label
 
     def reset_queue(self):
-        self.indices = list(range(len(data)))
+        self.indices = list(range(len(self.train_data)))
         random.shuffle(self.indices)
         return
 
