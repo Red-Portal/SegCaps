@@ -57,10 +57,10 @@ def conv2d_capsule(inputs, kernel_size, num_capsules, num_atoms,
 
     input_shape = tf.shape(inputs)
     batch_size = input_shape[0]
-    in_height = input_shape[1]
-    in_width = input_shape[2]
-    in_capsules = input_shape[3]
-    in_atoms = input_shape[4]
+    in_height = inputs.shape[1]
+    in_width = inputs.shape[2]
+    in_capsules = inputs.shape[3]
+    in_atoms = inputs.shape[4]
     with tf.variable_scope(name):
         W = tf.get_variable('weight', [kernel_size, kernel_size, in_atoms, num_capsules * num_atoms],
                             initializer=initializer, dtype=tf.float32)
@@ -97,10 +97,11 @@ def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scali
         "[None, height, width, num_capsule, num_atoms]"
 
     input_shape = tf.shape(inputs)
-    self.in_height = input_shape[1]
-    self.in_width = input_shape[2]
-    self.in_capsules = input_shape[3]
-    self.in_atoms = input_shape[4]
+    batch_size = tf.shape(inputs)[0]
+    in_height = inputs.shape[1]
+    in_width = inputs.shape[2]
+    in_capsules = inputs.shape[3]
+    in_atoms = inputs.shape[4]
 
     with tf.variable_scope(name):
         if upsamp_type == 'subpix':
