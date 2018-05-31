@@ -19,42 +19,42 @@ def CapsNetR3(inputs):
     
     inputs = tf.expand_dims(inputs, axis=3)
 
-    primary_caps = conv2d_capsule(inputs, kernel_size=5, num_capsule=2, num_atoms=16,
+    primary_caps = conv2d_capsule(inputs, kernel_size=5, num_capsules=2, num_atoms=16,
                                   strides=2, padding='same', routings=1, name='primarycaps')
 
-    conv_cap_2_1 = conv2d_capsule(primary_caps, kernel_size=5, num_capsule=4, num_atoms=16,
+    conv_cap_2_1 = conv2d_capsule(primary_caps, kernel_size=5, num_capsules=4, num_atoms=16,
                                   strides=1, padding='same', routings=3, name='conv_cap_2_1')
-    conv_cap_2_2 = conv2d_capsule(conv_cap_2_1, kernel_size=5, num_capsule=4, num_atoms=32,
+    conv_cap_2_2 = conv2d_capsule(conv_cap_2_1, kernel_size=5, num_capsules=4, num_atoms=32,
                                   strides=2, padding='same', routings=3, name='conv_cap_2_2')
 
-    conv_cap_3_1 = conv2d_capsule(conv_cap_2_2, kernel_size=5, num_capsule=8, num_atoms=32,
+    conv_cap_3_1 = conv2d_capsule(conv_cap_2_2, kernel_size=5, num_capsules=8, num_atoms=32,
                                   strides=1, padding='same', routings=3, name='conv_cap_3_1')
-    conv_cap_3_2 = conv2d_capsule(conv_cap_3_1, kernel_size=5, num_capsule=8, num_atoms=64,
+    conv_cap_3_2 = conv2d_capsule(conv_cap_3_1, kernel_size=5, num_capsules=8, num_atoms=64,
                                   strides=2, padding='same', routings=3, name='conv_cap_3_2')
     
-    conv_cap_4_1 = conv2d_capsule(conv_cap_3_2, kernel_size=5, num_capsule=8, num_atoms=32,
+    conv_cap_4_1 = conv2d_capsule(conv_cap_3_2, kernel_size=5, num_capsules=8, num_atoms=32,
                                   strides=1, padding='same', routings=3, name='conv_cap_4_1')
-    deconv_cap_1_1 = conv2d_tranpose_capsule(conv_cap_4_1, kernel_size=4, num_capsule=8,
+    deconv_cap_1_1 = conv2d_tranpose_capsule(conv_cap_4_1, kernel_size=4, num_capsules=8,
                                              num_atoms=32, upsamp_type='deconv', scaling=2,
                                              padding='same', routings=3, name='deconv_cap_1_1')
 
     up_1 = tf.concatenate([deconv_cap_1_1, conv_cap_3_1], axis=-2, name='up_1',)
-    deconv_cap_1_2 = conv2d_capsule(up_1, kernel_size=5, num_capsule=4, num_atoms=32, strides=1,
+    deconv_cap_1_2 = conv2d_capsule(up_1, kernel_size=5, num_capsules=4, num_atoms=32, strides=1,
                                     padding='same', routings=3, name='deconv_cap_1_2')
-    deconv_cap_2_1 = conv2d_transpose_capsule(deconv_cap_1_2, kernel_size=4, num_capsule=4,
+    deconv_cap_2_1 = conv2d_transpose_capsule(deconv_cap_1_2, kernel_size=4, num_capsules=4,
                                               num_atoms=16, upsamp_type='deconv', scaling=2,
                                               padding='same', routings=3, name='deconv_cap_2_1')
 
     up_2 = tf.concatenate([deconv_cap_2_1, conv_cap_2_1], axis=-2, name='up_2')
-    deconv_cap_2_2 = conv2d_capsule(up_2, kernel_size=5, num_capsule=4, num_atoms=16, strides=1,
+    deconv_cap_2_2 = conv2d_capsule(up_2, kernel_size=5, num_capsules=4, num_atoms=16, strides=1,
                                       padding='same', routings=3, name='deconv_cap_2_2')
-    deconv_cap_3_1 = conv2d_transpose_capsule(deconv_cap_2_2, kernel_size=4, num_capsule=2,
+    deconv_cap_3_1 = conv2d_transpose_capsule(deconv_cap_2_2, kernel_size=4, num_capsules=2,
                                               num_atoms=16, upsamp_type='deconv', scaling=2,
                                               padding='same', routings=3, name='deconv_cap_3_1')
 
     up_3 = tf.concatenate([deconv_cap_3_1, conv1_reshaped], axis=-2, name='up_3')
 
-    seg_caps = conv2d_capsule(up_3, kernel_size=1, num_capsule=1, num_atoms=16,
+    seg_caps = conv2d_capsule(up_3, kernel_size=1, num_capsules=1, num_atoms=16,
                               strides=1, padding='same', routings=3, name='seg_caps')
 
     out_seg = capsule_length(inputs=seg_caps, name='out_seg', keepdims=True)
