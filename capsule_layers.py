@@ -72,7 +72,7 @@ def conv2d_capsule(inputs, kernel_size, num_capsules, num_atoms,
         inputs.set_shape((None, in_height, in_width, in_atoms))
 
         inputs = tf.nn.conv2d(inputs, W, (strides, strides),
-                              padding=padding, data_format='channels_last')
+                              padding=padding, data_format='NHWC')
         votes_shape = tf.shape(inputs)
         _, out_height, out_width, _ = votes_shape
 
@@ -127,11 +127,11 @@ def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scali
         inputs.set_shape((None, in_height, in_width, in_atoms))
 
         if self.upsamp_type == 'resize':
-            inputs = tf.image.resize_images(inputs, scaling, scaling, 'channels_last')
+            inputs = tf.image.resize_images(inputs, scaling, scaling, 'NHWC')
             inputs = tf.nn.conv2d(inputs, kernel=W, strides=(1, 1),
-                                  padding=padding, data_format='channels_last')
+                                  padding=padding, data_format='NHWC')
         elif self.upsamp_type == 'subpix':
-            inputs = tf.nn.conv2d(inputs, kernel=W, strides=(1, 1), padding='same', data_format='channels_last')
+            inputs = tf.nn.conv2d(inputs, kernel=W, strides=(1, 1), padding='same', data_format='NHWC')
             inputs = tf.depth_to_space(inputs, scaling)
         else:
             batch_size = batch_size * in_capsules
@@ -139,7 +139,7 @@ def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scali
             out_width = deconv_length(in_width, scaling, kernel_size, padding)
             output_shape = (batch_size, out_height, out_width, num_capsule * num_atoms)
             outputs = tf.nn.conv2d_transpose(inputs, W, output_shape, (self.scaling, self.scaling),
-                                             padding=padding, data_format='channels_last')
+                                             padding=padding, data_format='NHWC')
         votes_shape = tf.shape(inputs)
         _, out_height, out_width, _ = votes_shape
 
