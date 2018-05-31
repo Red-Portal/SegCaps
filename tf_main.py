@@ -2,6 +2,7 @@
 import tensorflow as tf
 import random
 import imageio
+import os
 from capsnet import CapsNetR3
 
 def soft_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
