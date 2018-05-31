@@ -15,11 +15,11 @@ import tensorflow as tf
 def deconv_length(dim_size, stride_size, kernel_size, padding):
     if dim_size is None:
         return None
-    if padding == 'valid':
+    if padding == 'VALID':
         dim_size = dim_size * stride_size + max(kernel_size - stride_size, 0)
-    elif padding == 'full':
+    elif padding == 'FULL':
         dim_size = dim_size * stride_size - (stride_size + kernel_size - 2)
-    elif padding == 'same':
+    elif padding == 'SAME':
         dim_size = dim_size * stride_size
     return dim_size
 
@@ -72,7 +72,7 @@ def conv2d_capsule(inputs, kernel_size, num_capsules, num_atoms,
         inputs.set_shape((None, in_height, in_width, in_atoms))
 
         inputs = tf.nn.conv2d(inputs, W, (strides, strides),
-                           padding=padding, data_format='channels_last')
+                              padding=padding, data_format='channels_last')
         votes_shape = tf.shape(inputs)
         _, out_height, out_width, _ = votes_shape
 
@@ -129,7 +129,7 @@ def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scali
         if self.upsamp_type == 'resize':
             inputs = tf.image.resize_images(inputs, scaling, scaling, 'channels_last')
             inputs = tf.nn.conv2d(inputs, kernel=W, strides=(1, 1),
-                               padding=padding, data_format='channels_last')
+                                  padding=padding, data_format='channels_last')
         elif self.upsamp_type == 'subpix':
             inputs = tf.nn.conv2d(inputs, kernel=W, strides=(1, 1), padding='same', data_format='channels_last')
             inputs = tf.depth_to_space(inputs, scaling)
