@@ -47,7 +47,7 @@ def mask(inputs, mask=None, name="mask"):
     return mask * input
 
 def conv2d_capsule(inputs, kernel_size, num_capsules, num_atoms,
-                   strides=1, padding='same', routings=3,
+                   strides=1, padding='SAME', routings=3,
                    initializer=tf.initializers.random_normal,
                    name="conv2d_capsule"):
 
@@ -89,7 +89,7 @@ def conv2d_capsule(inputs, kernel_size, num_capsules, num_atoms,
     return activations
 
 def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scaling=2,
-                             upsamp_type='deconv', padding='same', routings=3,
+                             upsamp_type='deconv', padding='SAME', routings=3,
                              initializer=tf.initializers.random_normal,
                              name="conv2d_transpose_capsule"):
     assert len(inputs.shape) == 5, \
