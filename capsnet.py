@@ -17,7 +17,7 @@ def CapsNetR3(inputs):
     inputs = tf.layers.conv2d(inputs, filters=16, kernel_size=5, strides=1,
                               padding='same', activation=tf.nn.relu, name='conv1')
     
-    B, H, W, C = tf.shape(conv1)
+    B, H, W, C = tf.shape(inputs)
     inputs = tf.reshape(inputs, shape=[B, H, W, 1, C])
 
     primary_caps = conv2d_capsule(inputs, kernel_size=5, num_capsule=2, num_atoms=16,
