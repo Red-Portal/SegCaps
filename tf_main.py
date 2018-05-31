@@ -24,7 +24,7 @@ def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
 
 class data_manager:
     def __init__(self, train_data, train_label, valid_data, valid_label):
-        assert len(data) == len(label)
+        assert len(train_data) == len(train_label)
         self.train_data = train_data
         self.train_label = train_label
         self.valid_data = valid_data
