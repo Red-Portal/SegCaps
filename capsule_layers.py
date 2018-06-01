@@ -118,7 +118,7 @@ def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scali
             "deconv", "resize", or "subpix"')
 
         W = tf.get_variable(shape=weight_shape, initializer=initializer, name='weight')
-        b = tf.get_variable(shape=[1, 1, num_capsule, num_atoms],
+        b = tf.get_variable(shape=[1, 1, num_capsules, num_atoms],
                             initializer=tf.initializers.constant(0.1), name='bias')
 
         inputs = tf.transpose(inputs, [3, 0, 1, 2, 4])
@@ -137,7 +137,7 @@ def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scali
             batch_size = batch_size * in_capsules
             out_height = deconv_length(in_height, scaling, kernel_size, padding)
             out_width = deconv_length(in_width, scaling, kernel_size, padding)
-            output_shape = (batch_size, out_height, out_width, num_capsule * num_atoms)
+            output_shape = (batch_size, out_height, out_width, num_capsules * num_atoms)
             outputs = tf.nn.conv2d_transpose(inputs, W, output_shape, (1,self.scaling, self.scaling,1),
                                              padding=padding, data_format='NHWC')
         votes_shape = tf.shape(inputs)
