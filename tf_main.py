@@ -124,14 +124,14 @@ def main():
             if idx == total_iteration:
                 break
 
-            if idx % validation_step == 0 and idx > 0:
+            if idx % validation_step == 0:
                 stats = []
                 for valid_data, valid_label in data_iter.validation():
                     stats.append(
                         sess.run([op_loss, op_accu],
                                  feed_dict={x_in: valid_data, y_in: valid_label}))
                 stats = np.concatenate(stats, axis=0)
-                loss, accu = np.mean(stats, axis=0)[0:2]
+                loss, accu = np.mean(stats, axis=0)
                 print("validation loss: ", loss, " accu: ", accu)
 
             if idx == 0 or idx % report_step == 0:
