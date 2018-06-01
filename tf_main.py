@@ -77,7 +77,7 @@ def main():
     model = CapsNetR3(x)
     op_loss = soft_jaccard(x, model)
     op_accu = hard_jaccard(x, model)
-    optimizer = tf.train.NadamOptimizer(lr)
+    optimizer = tf.contrib.opt.NadamOptimizer(lr)
     op_train = optimizer.minimize(loss)
 
     with tf.Session() as sess:
