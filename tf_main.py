@@ -128,8 +128,8 @@ def main():
                 print("validation loss: ", loss, " accu: ", accu)
 
             if idx == 0 or idx % report_step == 0:
-                loss, accur, _ = sess.run([op_loss, op_accu, op_train],
-                                          feed_dict={x_in: data, y_in: label})
+                loss, accu, _ = sess.run([op_loss, op_accu, op_train],
+                                         feed_dict={x_in: data, y_in: label})
                 print("step: ", idx, " loss: ", loss, " accu: ", accu)
             else:
                 sess.run(op_train, feed_dict={x_in: data, y_in: label})
