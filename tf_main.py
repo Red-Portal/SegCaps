@@ -23,8 +23,9 @@ def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
     return iou 
 
 class data_manager:
-    def __init__(self,batch_size, train_data, train_label, valid_data, valid_label):
+    def __init__(self, batch_size, train_data, train_label, valid_data, valid_label):
         assert len(train_data) == len(train_label)
+        self.batch_size = batch_size
         self.train_data = train_data
         self.train_label = train_label
         self.valid_data = valid_data
@@ -44,9 +45,9 @@ class data_manager:
         return self
 
     def __next__(self):
-        if len(self.indices) < batch_size:
+        if len(self.indices) < self.batch_size:
             self.reset_queue()
-        indices = [self.indices.pop() for i in range(batch_size)]
+        indices = [self.indices.pop() for i in range(self.batch_size)]
         data = np.array(self.train_data[indices])
         label = np.array(self.train_label[indices])
         return data, label

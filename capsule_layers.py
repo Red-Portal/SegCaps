@@ -172,7 +172,7 @@ def update_routing(votes, biases, logit_shape, num_dims,
     def _body(i, logits, activations):
         """Routing while loop."""
         # route: [batch, input_dim, output_dim, ...]
-        route = tf.nn.softmax(logits, dim=-1)
+        route = tf.nn.softmax(logits, axis=-1)
         preactivate_unrolled = route * votes_trans
         preact_trans = tf.transpose(preactivate_unrolled, r_t_shape)
         preactivate = tf.reduce_sum(preact_trans, axis=1) + biases
