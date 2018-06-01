@@ -11,6 +11,7 @@ This file contains the definitions of the various capsule layers and dynamic rou
 '''
 
 import tensorflow as tf
+import numpy as np
 
 def deconv_length(dim_size, stride_size, kernel_size, padding):
     if dim_size is None:
