@@ -67,7 +67,7 @@ def main():
     report_step = 10
     validation_step = 100
     total_iteration = 1000
-    batch_size = 32
+    batch_size = 16
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
     print("data: ", len(data), " shape: ", data[0].shape)
