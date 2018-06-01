@@ -14,6 +14,9 @@ def soft_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
     dice = tf.reduce_mean(dice)
     return dice
 
+def onehot(output):
+    return tf.cast(output > 0.5, dtype=tf.float32)
+
 def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
     pre = tf.cast(output > 0.5, dtype=tf.float32)
     truth = tf.cast(target > 0.5, dtype=tf.float32)
@@ -95,7 +98,7 @@ def main():
     lr = 0.0001
     report_step = 10
     validation_step = 100
-    total_iteration = 1000
+    total_iteration = 500
     batch_size = 16
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
@@ -111,6 +114,7 @@ def main():
     op_accu = hard_jaccard(x, model)
     optimizer = tf.contrib.opt.NadamOptimizer(lr)
     op_train = optimizer.minimize(op_loss)
+    op_out = onehot(model)
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
@@ -136,7 +140,17 @@ def main():
                 print("step: ", idx, " loss: ", loss, " accu: ", accu)
             else:
                 sess.run(op_train, feed_dict={x_in: data, y_in: label})
-    return
+
+        masks = []
+        imags = []
+        for valid_data, valid_label in data_iter.validation():
+            masks.append(sess.run(op_onehot, feed_dict={x_in: valid_data}))
+            imags.append(valid_data)
+        masks = np.concatenate(masks, axis=0)
+        imags = np.concatenate(imags, axis=0)
+
+        np.save("masks.npy", masks)
+        np.save("imags.npy", imags)
 
 if __name__ == "__main__":
     main()
