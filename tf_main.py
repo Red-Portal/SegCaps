@@ -125,7 +125,7 @@ def main():
     x = tf.expand_dims(x_in , axis=-1)
     y = tf.expand_dims(y_in , axis=-1)
     model = CapsNetR3(x)
-    op_loss = binary_cross_entropy(y, model) #margin_loss(y, model)
+    op_loss = tf.reduce_mean(margin_loss(y, model))
     op_accu = hard_jaccard(y, model)
     optimizer = tf.contrib.opt.NadamOptimizer(lr)
     op_train = optimizer.minimize(op_loss)
