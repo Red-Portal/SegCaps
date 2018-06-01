@@ -127,11 +127,10 @@ def main():
             if idx % validation_step == 0:
                 stats = []
                 for valid_data, valid_label in data_iter.validation():
-                    stats.append(
-                        sess.run([op_loss, op_accu],
-                                 feed_dict={x_in: valid_data, y_in: valid_label}))
-                stats = np.concatenate(stats, axis=0)
-                print(stats)
+                    loss, accu = sess.run([op_loss, op_accu],
+                                          feed_dict={x_in: valid_data, y_in: valid_label})
+                    stats.append([np.mean(loss), np.mean(accu)])
+                stats = np.array(stats, axis=0)
                 loss, accu = np.mean(stats, axis=0)
                 print("validation loss: ", loss, " accu: ", accu)
 
