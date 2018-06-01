@@ -27,13 +27,12 @@ def margin_loss(labels, raw_logits, margin=0.4, downweight=0.5, pos_weight=1.0):
     return 0.5 * positive_cost + downweight * 0.5 * negative_cost
 
 def binary_cross_entropy(labels, logits, smooth=1e-5):
-    return tf.reduce_sum(tf.cast(logits > 1.0, dtype=tf.float32))
-
     positive = labels * tf.log(logits + smooth)
     negative = (1 - labels) * tf.log(1 - logits + smooth)
     return -tf.reduce_mean(positive + negative)
 
 def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
+    return tf.reduce_sum(tf.cast(target > 1.0, dtype=tf.float32))
     pre = tf.cast(output > 0.5, dtype=tf.float32)
     truth = tf.cast(target > 0.5, dtype=tf.float32)
     inse = tf.reduce_sum(tf.multiply(pre, truth), axis=axis)  # AND
