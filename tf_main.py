@@ -78,7 +78,7 @@ def main():
     op_loss = soft_jaccard(x, model)
     op_accu = hard_jaccard(x, model)
     optimizer = tf.contrib.opt.NadamOptimizer(lr)
-    op_train = optimizer.minimize(loss)
+    op_train = optimizer.minimize(op_loss)
 
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
