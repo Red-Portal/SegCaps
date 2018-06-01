@@ -109,10 +109,10 @@ def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scali
                           num_capsules * num_atoms * scaling * scaling]
         elif upsamp_type == 'resize':
             weight_shape=[kernel_size, kernel_size,
-                          in_atoms, num_capsule * num_atoms]
+                          in_atoms, num_capsules * num_atoms]
         elif upsamp_type == 'deconv':
             weight_shape=[kernel_size, kernel_size,
-                          num_capsule * num_atoms, in_atoms]
+                          num_capsules * num_atoms, in_atoms]
         else:
             raise NotImplementedError('Upsampling must be one of: \
             "deconv", "resize", or "subpix"')
