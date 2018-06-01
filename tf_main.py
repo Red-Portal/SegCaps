@@ -18,12 +18,11 @@ def onehot(output):
     return tf.cast(output > 0.5, dtype=tf.float32)
 
 def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
-    pred = tf.cast(output > 0.5, dtype=tf.float32)
+    pre = tf.cast(output > 0.5, dtype=tf.float32)
     truth = tf.cast(target > 0.5, dtype=tf.float32)
-    inse = tf.reduce_sum(tf.multiply(pred, truth), axis=axis)
-    l = tf.reduce_sum(pred, axis=axis)
-    r = tf.reduce_sum(truth, axis=axis)
-    batch_iou = (inse + smooth) / (l + r + smooth)
+    inse = tf.reduce_sum(tf.multiply(pre, truth), axis=axis)  # AND
+    union = tf.reduce_sum(tf.cast(tf.add(pre, truth) >= 1, dtype=tf.float32), axis=axis)  # OR
+    batch_iou = (inse + smooth) / (union + smooth)
     iou = tf.reduce_mean(batch_iou)
     return iou 
 
