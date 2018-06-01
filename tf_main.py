@@ -105,8 +105,8 @@ def load_data(data_path, label_path):
     label = []
     for i in os.listdir(data_path):
         data.append(imageio.imread(os.path.join(data_path, i)))
-    for i in os.listdir(data_path):
-        label.append(imageio.imread(os.path.join(data_path, i)))
+    for i in os.listdir(label_path):
+        label.append(imageio.imread(os.path.join(label_path, i)))
     return data, label
 
 def main():
