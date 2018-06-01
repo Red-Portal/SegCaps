@@ -131,6 +131,7 @@ def main():
                         sess.run([op_loss, op_accu],
                                  feed_dict={x_in: valid_data, y_in: valid_label}))
                 stats = np.concatenate(stats, axis=0)
+                print(stats)
                 loss, accu = np.mean(stats, axis=0)
                 print("validation loss: ", loss, " accu: ", accu)
 
