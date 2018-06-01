@@ -20,9 +20,10 @@ def onehot(output):
 def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
     pre = tf.cast(output > 0.5, dtype=tf.float32)
     truth = tf.cast(target > 0.5, dtype=tf.float32)
-    inse = tf.reduce_sum(tf.multiply(pre, truth), axis=axis)  # AND
-    union = tf.reduce_sum(tf.cast(tf.add(pre, truth) >= 1, dtype=tf.float32), axis=axis)  # OR
-    batch_iou = (inse + smooth) / (union + smooth)
+    inse = tf.reduce_sum(tf.multiply(pre, true), axis=axis)
+    l = tf.reduce_sum(y_pred, axis=axis)
+    r = tf.reduce_sum(y_true, axis=axis)
+    batch_iou = (inse + smooth) / (l + r + smooth)
     iou = tf.reduce_mean(batch_iou)
     return iou 
 
@@ -111,7 +112,7 @@ def main():
     x = tf.expand_dims(x_in , axis=-1)
     y = tf.expand_dims(y_in , axis=-1)
     model = CapsNetR3(x)
-    op_loss = (-1) * soft_jaccard(model, y)
+    op_loss = 1 - soft_jaccard(model, y)
     op_accu = hard_jaccard(model, y)
     optimizer = tf.contrib.opt.NadamOptimizer(lr)
     op_train = optimizer.minimize(op_loss)
