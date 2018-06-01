@@ -122,8 +122,8 @@ def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scali
                             initializer=tf.initializers.constant(0.1), name='bias')
 
         inputs = tf.transpose(inputs, [3, 0, 1, 2, 4])
-        input_shape = tf.shape(input_transposed)
-        inputs = tf.reshape(input_transposed, [batch_size * in_capsules, in_height, in_width, in_atoms])
+        input_shape = tf.shape(inputs)
+        inputs = tf.reshape(inputs, [batch_size * in_capsules, in_height, in_width, in_atoms])
         inputs.set_shape((None, in_height, in_width, in_atoms))
 
         if self.upsamp_type == 'resize':
