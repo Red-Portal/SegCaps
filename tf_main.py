@@ -93,8 +93,14 @@ def main():
 
             if idx % validation_step == 0:
                 valid_data, valid_label = data_iter.validation()
-                loss, accur = sess.run([op_loss, op_accu],
-                                        feed_dict={x_in: valid_data, y_in: valid_label})
+                stats = []
+                for i in range(len(valid_data)):
+                    stats.append(
+                        sess.run([op_loss, op_accu],
+                                 feed_dict={x_in: valid_data[i], y_in: valid_label[i]}))
+                stats = np.array(stats)
+                loss = stats[:,0]
+                accu = stats[:,1]
                 print("validation loss: ", loss, " accu: ", accu)
 
             if idx == 0 or idx % report_step == 0:
