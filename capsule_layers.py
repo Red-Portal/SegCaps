@@ -173,21 +173,19 @@ def update_routing(votes, biases, logit_shape, num_dims,
         """Routing while loop."""
         # route: [batch, input_dim, output_dim, ...]
         route = tf.nn.softmax(logits, dim=-1)
-        print(logits.shape)
         preactivate_unrolled = route * votes_trans
         preact_trans = tf.transpose(preactivate_unrolled, r_t_shape)
-        print(logits.shape)
         preactivate = tf.reduce_sum(preact_trans, axis=1) + biases
         activation = _squash(preactivate)
-        print(logits.shape)
         activations = activations.write(i, activation)
         act_3d = tf.expand_dims(activation, 1)
-        print(logits.shape)
         tile_shape = np.ones(num_dims, dtype=np.int32).tolist()
         tile_shape[1] = input_dim
         print(logits.shape)
         act_replicated = tf.tile(act_3d, tile_shape)
+        print(logits.shape)
         distances = tf.reduce_sum(votes * act_replicated, axis=-1)
+        print(logits.shape)
         logits += distances
         print(logits.shape)
         return (i + 1, logits, activations)
