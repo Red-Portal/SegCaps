@@ -109,7 +109,7 @@ def load_data(data_path, label_path):
     return data, label
 
 def main():
-    lr = 0.001
+    lr = 0.01
     report_step = 10
     validation_step = 100
     total_iteration = 5000
