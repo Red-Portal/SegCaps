@@ -43,7 +43,7 @@ def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
 class data_manager:
     class valid_iter:
         def __init__(self, batch_size, valid_data, valid_label):
-            self.batch_size = batch_size
+            self.batch_size = 16
             self.valid_data = valid_data
             self.valid_label = valid_label
             self.idx = 0
@@ -109,11 +109,11 @@ def load_data(data_path, label_path):
     return data, label
 
 def main():
-    lr = 0.005
+    lr = 0.0005
     report_step = 10
     validation_step = 100
     total_iteration = 5000
-    batch_size = 4
+    batch_size = 1
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
     print("data: ", len(data), " shape: ", data[0].shape)
