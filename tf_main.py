@@ -86,7 +86,8 @@ def main():
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
 
-        for idx, data, label in enumerate(data_iter):
+        for idx, batch in enumerate(data_iter):
+            data, label = batch
             if idx == total_iteration:
                 break
 
