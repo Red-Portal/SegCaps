@@ -184,6 +184,8 @@ def update_routing(votes, biases, logit_shape, num_dims,
         act_replicated = tf.tile(act_3d, tile_shape)
         distances = tf.reduce_sum(votes * act_replicated, axis=-1)
         logits += distances
+        print(logits.shape)
+        print(activations.shape)
         return (i + 1, logits, activations)
 
     activations = tf.TensorArray(
