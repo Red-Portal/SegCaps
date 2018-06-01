@@ -28,7 +28,7 @@ def batch_flatten(input_tensor):
     flat_shape = tf.stack([-1, tf.reduce_prod(tf.shape(input_tensor)[1:])])
     return tf.reshape(input_tensor, flat_shape)
 
-def capsule_length(inputs, name="length", keepdims=False):
+def capsule_length(inputs, name="length", keepdims=True):
     with tf.variable_scope(name):
         if inputs.get_shape().ndims == 5:
             assert inputs.get_shape()[-2].value == 1, \
