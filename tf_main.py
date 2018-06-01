@@ -49,8 +49,8 @@ class data_manager:
         if len(self.indices) < self.batch_size:
             self.reset_queue()
         indices = [self.indices.pop() for i in range(self.batch_size)]
-        data = np.array(self.train_data[indices])
-        label = np.array(self.train_label[indices])
+        data = np.array([self.train_data[i] for i in indices])
+        label = np.array([self.train_label[i] for i in indices])
         return data, label
 
 def load_data(data_path, label_path):
