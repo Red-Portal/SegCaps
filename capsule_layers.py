@@ -126,11 +126,11 @@ def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scali
         inputs = tf.reshape(inputs, [batch_size * in_capsules, in_height, in_width, in_atoms])
         inputs.set_shape((None, in_height, in_width, in_atoms))
 
-        if self.upsamp_type == 'resize':
+        if upsamp_type == 'resize':
             inputs = tf.image.resize_images(inputs, scaling, scaling, 'NHWC')
             inputs = tf.nn.conv2d(inputs, kernel=W, strides=(1,1,1,1),
                                   padding=padding, data_format='NHWC')
-        elif self.upsamp_type == 'subpix':
+        elif upsamp_type == 'subpix':
             inputs = tf.nn.conv2d(inputs, kernel=W, strides=(1,1,1,1), padding='same', data_format='NHWC')
             inputs = tf.depth_to_space(inputs, scaling)
         else:
