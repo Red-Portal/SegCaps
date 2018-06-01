@@ -109,7 +109,7 @@ def load_data(data_path, label_path):
     return data, label
 
 def main():
-    lr = 0.0005
+    lr = 0.0001
     report_step = 50
     validation_step = 1000
     total_iteration = 10000
@@ -125,7 +125,7 @@ def main():
     x = tf.expand_dims(x_in , axis=-1)
     y = tf.expand_dims(y_in , axis=-1)
     model = CapsNetR3(x)
-    op_loss = 1 - soft_jaccard(y, model)#tf.reduce_mean(margin_loss(y, model))
+    op_loss = tf.reduce_mean(margin_loss(y, model))
     op_accu = soft_jaccard(y, model)
     optimizer = tf.contrib.opt.NadamOptimizer(lr)
     op_train = optimizer.minimize(op_loss)
