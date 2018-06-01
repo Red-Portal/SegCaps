@@ -36,11 +36,15 @@ class data_manager:
             return self
 
         def __next__(self):
+            if self.idx == -1:
+                self.idx = 0
+                raise StopIteration
+            
             begin = self.idx
             end = begin + self.batch_size
             if end > len(self.valid_data):
                 end = len(self.valid_data)
-                self.idx = 0
+                self.idx = -1
             else:
                 self.idx = end
             data = self.valid_data[begin:end]
