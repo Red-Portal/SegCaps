@@ -23,7 +23,7 @@ def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
     return iou 
 
 class data_manager:
-    def __init__(self, train_data, train_label, valid_data, valid_label):
+    def __init__(self,batch_size, train_data, train_label, valid_data, valid_label):
         assert len(train_data) == len(train_label)
         self.train_data = train_data
         self.train_label = train_label
@@ -43,7 +43,7 @@ class data_manager:
     def __iter__(self):
         return self
 
-    def __next__(self, batch_size):
+    def __next__(self):
         if len(self.indices) < batch_size:
             self.reset_queue()
         indices = [self.indices.pop() for i in range(batch_size)]
@@ -65,10 +65,11 @@ def main():
     report_step = 10
     validation_step = 100
     total_iteration = 1000
+    batch_size = 32
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
     print("data: ", len(data), " shape: ", data[0].shape)
-    data_iter = data_manager(data[500:], label[500:], data[:500], label[:500])
+    data_iter = data_manager(batch_size, data[500:], label[500:], data[:500], label[:500])
     shape = data[0].shape
     x_in = tf.placeholder(tf.float32, [None, shape[0], shape[1]])
     y_in = tf.placeholder(tf.float32, [None, shape[0], shape[1]])
