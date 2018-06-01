@@ -138,8 +138,8 @@ def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scali
             out_height = deconv_length(in_height, scaling, kernel_size, padding)
             out_width = deconv_length(in_width, scaling, kernel_size, padding)
             output_shape = (batch_size, out_height, out_width, num_capsules * num_atoms)
-            outputs = tf.nn.conv2d_transpose(inputs, W, output_shape, (1,scaling,scaling,1),
-                                             padding=padding, data_format='NHWC')
+            inputs = tf.nn.conv2d_transpose(inputs, W, output_shape, (1,scaling,scaling,1),
+                                            padding=padding, data_format='NHWC')
         votes_shape = tf.shape(inputs)
         out_height, out_width = inputs.shape[1:3]
 
