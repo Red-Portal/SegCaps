@@ -109,9 +109,10 @@ def main():
     y_in = tf.placeholder(tf.float32, [None, shape[0], shape[1]])
 
     x = tf.expand_dims(x_in , axis=-1)
+    y = tf.expand_dims(y_in , axis=-1)
     model = CapsNetR3(x)
-    op_loss = soft_jaccard(model, y_in)
-    op_accu = hard_jaccard(model, y_in)
+    op_loss = soft_jaccard(model, y)
+    op_accu = hard_jaccard(model, y)
     optimizer = tf.contrib.opt.NadamOptimizer(lr)
     op_train = optimizer.minimize(op_loss)
     op_out = onehot(model)
