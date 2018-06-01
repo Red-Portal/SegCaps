@@ -34,7 +34,7 @@ def CapsNetR3(inputs):
     
     conv_cap_4_1 = conv2d_capsule(conv_cap_3_2, kernel_size=5, num_capsules=8, num_atoms=32,
                                   strides=1, routings=3, name='conv_cap_4_1')
-    deconv_cap_1_1 = conv2d_tranpose_capsule(conv_cap_4_1, kernel_size=4, num_capsules=8,
+    deconv_cap_1_1 = conv2d_transpose_capsule(conv_cap_4_1, kernel_size=4, num_capsules=8,
                                              num_atoms=32, upsamp_type='deconv', scaling=2,
                                              routings=3, name='deconv_cap_1_1')
 
