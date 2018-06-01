@@ -17,15 +17,33 @@ def soft_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
 def onehot(output):
     return tf.cast(output > 0.5, dtype=tf.float32)
 
-def hard_jaccard(y_true, y_pred, threshold=0.5, axis=[1,2,3], smooth=1e-5):
-    y_pred = tf.cast(y_pred > threshold, dtype=tf.float32)
-    y_true = tf.cast(y_true > threshold, dtype=tf.float32)
-    inse = tf.reduce_sum(tf.multiply(y_pred, y_true), axis=axis)
-    l = tf.reduce_sum(y_pred, axis=axis)
-    r = tf.reduce_sum(y_true, axis=axis)
-    hard_dice = (2. * inse + smooth) / (l + r + smooth)
-    hard_dice = tf.reduce_mean(hard_dice)
-    return hard_dice
+def margin_loss(labels, raw_logits, margin=0.4, downweight=0.5, pos_weight=1.0):
+    """Penalizes deviations from margin for each logit.
+    Each wrong logit costs its distance to margin. For negative logits margin is
+    0.1 and for positives it is 0.9. First subtract 0.5 from all logits. Now
+    margin is 0.4 from each side.
+    Args:
+    labels: tensor, one hot encoding of ground truth.
+    raw_logits: tensor, model predictions in range [0, 1]
+    Returns:
+    A tensor with cost for each data point of shape [batch_size].
+    """
+    logits = raw_logits - 0.5
+    positive_cost = pos_weight * labels * tf.cast(tf.less(logits, margin),
+                                                  tf.float32) * tf.pow(logits - margin, 2)
+    negative_cost = (1 - labels) * tf.cast(
+        tf.greater(logits, -margin), tf.float32) * tf.pow(logits + margin, 2)
+    return 0.5 * positive_cost + downweight * 0.5 * negative_cost
+
+
+def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
+    pre = tf.cast(output > 0.5, dtype=tf.float32)
+    truth = tf.cast(target > 0.5, dtype=tf.float32)
+    inse = tf.reduce_sum(tf.multiply(pre, truth), axis=axis)  # AND
+    union = tf.reduce_sum(tf.cast(tf.add(pre, truth) >= 1, dtype=tf.float32), axis=axis)  # OR
+    batch_iou = (inse + smooth) / (union + smooth)
+    iou = tf.reduce_mean(batch_iou)
+    return iou 
 
 class data_manager:
     class valid_iter:
@@ -99,7 +117,7 @@ def main():
     lr = 0.0001
     report_step = 10
     validation_step = 100
-    total_iteration = 100
+    total_iteration = 1000
     batch_size = 16
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
@@ -112,8 +130,8 @@ def main():
     x = tf.expand_dims(x_in , axis=-1)
     y = tf.expand_dims(y_in , axis=-1)
     model = CapsNetR3(x)
-    op_loss = 1 - soft_jaccard(model, y)
-    op_accu = hard_jaccard(model, y)
+    op_loss = margin_loss(y, model)
+    op_accu = soft_jaccard(y, model)
     optimizer = tf.contrib.opt.NadamOptimizer(lr)
     op_train = optimizer.minimize(op_loss)
     op_out = onehot(model)
