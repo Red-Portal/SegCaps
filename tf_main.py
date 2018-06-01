@@ -98,7 +98,7 @@ def main():
     lr = 0.0001
     report_step = 10
     validation_step = 100
-    total_iteration = 500
+    total_iteration = 100
     batch_size = 16
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
@@ -144,7 +144,7 @@ def main():
         masks = []
         imags = []
         for valid_data, valid_label in data_iter.validation():
-            masks.append(sess.run(op_onehot, feed_dict={x_in: valid_data}))
+            masks.append(sess.run(op_out, feed_dict={x_in: valid_data}))
             imags.append(valid_data)
         masks = np.concatenate(masks, axis=0)
         imags = np.concatenate(imags, axis=0)
