@@ -33,7 +33,7 @@ def margin_loss(labels, raw_logits, margin=0.4, downweight=0.5, pos_weight=1.0):
                                                   tf.float32) * tf.pow(logits - margin, 2)
     negative_cost = (1 - labels) * tf.cast(
         tf.greater(logits, -margin), tf.float32) * tf.pow(logits + margin, 2)
-    return 0.5 * positive_cost + downweight * 0.5 * negative_cost
+    return tf.reduce_mean(0.5 * positive_cost + downweight * 0.5 * negative_cost)
 
 
 def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
