@@ -181,11 +181,10 @@ def update_routing(votes, biases, logit_shape, num_dims,
         act_3d = tf.expand_dims(activation, 1)
         tile_shape = np.ones(num_dims, dtype=np.int32).tolist()
         tile_shape[1] = input_dim
-        print(logits.shape)
         act_replicated = tf.tile(act_3d, tile_shape)
         print(logits.shape)
         distances = tf.reduce_sum(votes * act_replicated, axis=-1)
-        print(logits.shape)
+        print(votes.shape, " ", act_replicated.shape)
         logits += distances
         print(logits.shape)
         return (i + 1, logits, activations)
