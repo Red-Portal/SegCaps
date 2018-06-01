@@ -155,8 +155,8 @@ def conv2d_transpose_capsule(inputs, kernel_size, num_capsules, num_atoms, scali
                                      output_dim=num_capsules, num_routing=routings)
     return activations
 
-def update_routing(votes, biases, logit_shape, num_dims, input_dim, output_dim,
-                    num_routing):
+def update_routing(votes, biases, logit_shape, num_dims,
+                   input_dim, output_dim, num_routing):
     if num_dims == 6:
         votes_t_shape = [5, 0, 1, 2, 3, 4]
         r_t_shape = [1, 2, 3, 4, 5, 0]
@@ -167,7 +167,7 @@ def update_routing(votes, biases, logit_shape, num_dims, input_dim, output_dim,
         raise NotImplementedError('Not implemented')
 
     votes_trans = tf.transpose(votes, votes_t_shape)
-    _, _, _, height, width, caps = votes_trans.get_shape()
+    height, width, caps = votes_trans.shape[2:]
 
     def _body(i, logits, activations):
         """Routing while loop."""
