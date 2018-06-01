@@ -109,11 +109,11 @@ def load_data(data_path, label_path):
     return data, label
 
 def main():
-    lr = 0.01
+    lr = 0.005
     report_step = 10
     validation_step = 100
     total_iteration = 5000
-    batch_size = 16
+    batch_size = 8
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
     print("data: ", len(data), " shape: ", data[0].shape)
@@ -125,7 +125,7 @@ def main():
     x = tf.expand_dims(x_in , axis=-1)
     y = tf.expand_dims(y_in , axis=-1)
     model = CapsNetR3(x)
-    op_loss = 1 - soft_jaccard(y, model)#tf.reduce_mean(margin_loss(y, model))
+    op_loss = tf.reduce_mean(margin_loss(y, model))#1 - soft_jaccard(y, model)
     op_accu = soft_jaccard(y, model)
     optimizer = tf.contrib.opt.NadamOptimizer(lr)
     op_train = optimizer.minimize(op_loss)
