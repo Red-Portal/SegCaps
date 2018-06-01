@@ -51,7 +51,7 @@ class data_manager:
         self.batch_size = batch_size
         self.train_data = train_data
         self.train_label = train_label
-        self.valid = valid_iter(batch_size, valid_data, valid_label)
+        self.valid = self.valid_iter(batch_size, valid_data, valid_label)
         self.reset_queue()
         return
 
