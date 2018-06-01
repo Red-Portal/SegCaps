@@ -37,13 +37,14 @@ class data_manager:
 
         def __next__(self):
             begin = self.idx
-            if begin + self.batch_size > len(self.valid_data):
-                end = begin + self.batch_size
-            else:
+            end = begin + self.batch_size
+            if end > len(self.valid_data):
                 end = len(self.valid_data)
                 self.idx = 0
-            data = [self.valid_data[i] for i in range(begin, end)]
-            label = [self.valid_data[i] for i in range(begin, end)]
+            else:
+                self.idx = end
+            data = self.valid_data[begin:end]
+            label = self.valid_label[begin:end]
             return data, label
 
     def __init__(self, batch_size, train_data, train_label, valid_data, valid_label):
