@@ -80,7 +80,7 @@ def conv2d_capsule(inputs, kernel_size, num_capsules, num_atoms,
                                      out_width, num_capsules, num_atoms])
         inputs.set_shape((None, in_capsules, out_height, out_width, num_capsules, num_atoms))
 
-        logit_shape = [in_capsules, batch_size, out_height, out_width, num_capsules]
+        logit_shape = [batch_size, in_capsules, out_height, out_width, num_capsules]
         b = tf.tile(b, [out_height, out_width, 1, 1])
 
         activations = update_routing(votes=inputs, biases=b, logit_shape=logit_shape,
