@@ -59,6 +59,4 @@ def CapsNetR3(inputs):
 
     out_seg = capsule_length(inputs=seg_caps, name='out_seg', keepdims=True)
 
-    _, H, W, C, A = tf.shape(seg_caps)
-
     return out_seg
