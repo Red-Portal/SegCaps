@@ -7,7 +7,6 @@ import os
 from capsnet import CapsNetR3
 
 def soft_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
-    return tf.reduce_sum(tf.cast(output > 1.0, dtype=tf.float32))
     inse = tf.reduce_sum(output * target, axis=axis)
     l = tf.reduce_sum(output * output, axis=axis)
     r = tf.reduce_sum(target * target, axis=axis)
