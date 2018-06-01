@@ -29,6 +29,7 @@ def CapsNetR3(inputs):
 
     conv_cap_3_1 = conv2d_capsule(conv_cap_2_2, kernel_size=5, num_capsules=8, num_atoms=32,
                                   strides=1, routings=3, name='conv_cap_3_1')
+    print("conv_cap_3_1: ", conv_cap_3_1.shape)
     conv_cap_3_2 = conv2d_capsule(conv_cap_3_1, kernel_size=5, num_capsules=8, num_atoms=64,
                                   strides=2, routings=3, name='conv_cap_3_2')
     
@@ -38,6 +39,7 @@ def CapsNetR3(inputs):
                                              num_atoms=32, upsamp_type='deconv', scaling=2,
                                              routings=3, name='deconv_cap_1_1')
 
+    print("deconv_cap_1_1: ", deconv_cap_1_1.shape)
     up_1 = tf.concat([deconv_cap_1_1, conv_cap_3_1], axis=-2, name='up_1',)
     deconv_cap_1_2 = conv2d_capsule(up_1, kernel_size=5, num_capsules=4, num_atoms=32, strides=1,
                                     routings=3, name='deconv_cap_1_2')
