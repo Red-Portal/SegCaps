@@ -116,7 +116,7 @@ def main():
             if idx == total_iteration:
                 break
 
-            if idx % validation_step == 0:
+            if idx % validation_step == 0 and idx > 0:
                 stats = []
                 for valid_data, valid_label in data_iter.validation():
                     stats.append(
