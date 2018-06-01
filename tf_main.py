@@ -112,7 +112,7 @@ def main():
     lr = 0.01
     report_step = 10
     validation_step = 100
-    total_iteration = 1000
+    total_iteration = 5000
     batch_size = 16
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
