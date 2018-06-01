@@ -24,13 +24,34 @@ def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
     return iou 
 
 class data_manager:
+    class valid_iter:
+        def __init__(self, batch_size, valid_data, valid_label):
+            self.batch_size = batch_size
+            self.valid_data = valid_data
+            self.valid_label = valid_label
+            self.idx = 0
+            return
+
+        def __iter__(self):
+            return self
+
+        def __next__(self):
+            begin = self.idx
+            if begin + self.batch_size > len(self.valid_data):
+                end = begin + self.batch_size
+            else:
+                end = len(self.valid_data)
+                self.idx = 0
+            data = [self.valid_data[i] for i in range(begin, end)]
+            label = [self.valid_data[i] for i in range(begin, end)]
+            return data, label
+
     def __init__(self, batch_size, train_data, train_label, valid_data, valid_label):
         assert len(train_data) == len(train_label)
         self.batch_size = batch_size
         self.train_data = train_data
         self.train_label = train_label
-        self.valid_data = valid_data
-        self.valid_label = valid_label
+        self.valid = valid_iter(batch_size, valid_data, valid_label)
         self.reset_queue()
         return
 
@@ -41,6 +62,9 @@ class data_manager:
         self.indices = list(range(len(self.train_data)))
         random.shuffle(self.indices)
         return
+
+    def validation(self):
+        return self.valid
 
     def __iter__(self):
         return self
@@ -92,13 +116,12 @@ def main():
                 break
 
             if idx % validation_step == 0:
-                valid_data, valid_label = data_iter.validation()
                 stats = []
-                for i in range(len(valid_data)):
+                for valid_data, valid_label in data_iter.validation():
                     stats.append(
                         sess.run([op_loss, op_accu],
-                                 feed_dict={x_in: valid_data[i], y_in: valid_label[i]}))
-                stats = np.array(stats)
+                                 feed_dict={x_in: valid_data, y_in: valid_label}))
+                stats = np.concatenate(stats, axis=0)
                 loss = stats[:,0]
                 accu = stats[:,1]
                 print("validation loss: ", loss, " accu: ", accu)
