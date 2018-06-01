@@ -110,9 +110,9 @@ def load_data(data_path, label_path):
 
 def main():
     lr = 0.0005
-    report_step = 10
-    validation_step = 100
-    total_iteration = 5000
+    report_step = 50
+    validation_step = 1000
+    total_iteration = 10000
     batch_size = 1
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
