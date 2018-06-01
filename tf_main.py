@@ -18,7 +18,7 @@ def onehot(output):
     return tf.cast(output > 0.5, dtype=tf.float32)
 
 def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
-    prep = tf.cast(output > 0.5, dtype=tf.float32)
+    pred = tf.cast(output > 0.5, dtype=tf.float32)
     truth = tf.cast(target > 0.5, dtype=tf.float32)
     inse = tf.reduce_sum(tf.multiply(pred, truth), axis=axis)
     l = tf.reduce_sum(pred, axis=axis)
