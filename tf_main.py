@@ -17,14 +17,15 @@ def soft_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
 def onehot(output):
     return tf.cast(output > 0.5, dtype=tf.float32)
 
-def hard_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
-    pre = tf.cast(output > 0.5, dtype=tf.float32)
-    truth = tf.cast(target > 0.5, dtype=tf.float32)
-    inse = tf.reduce_sum(tf.multiply(pre, truth), axis=axis)  # AND
-    union = tf.reduce_sum(tf.cast(tf.add(pre, truth) >= 1, dtype=tf.float32), axis=axis)  # OR
-    batch_iou = (inse + smooth) / (union + smooth)
-    iou = tf.reduce_mean(batch_iou)
-    return iou 
+def hard_jaccard(y_true, y_pred, threshold=0.5, axis=[1,2,3], smooth=1e-5):
+    y_pred = tf.cast(y_pred > threshold, dtype=tf.float32)
+    y_true = tf.cast(y_true > threshold, dtype=tf.float32)
+    inse = tf.reduce_sum(tf.multiply(y_pred, y_true), axis=axis)
+    l = tf.reduce_sum(y_pred, axis=axis)
+    r = tf.reduce_sum(y_true, axis=axis)
+    hard_dice = (2. * inse + smooth) / (l + r + smooth)
+    hard_dice = tf.reduce_mean(hard_dice)
+    return hard_dice
 
 class data_manager:
     class valid_iter:
