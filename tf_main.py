@@ -123,8 +123,7 @@ def main():
                         sess.run([op_loss, op_accu],
                                  feed_dict={x_in: valid_data, y_in: valid_label}))
                 stats = np.concatenate(stats, axis=0)
-                loss = stats[:,0]
-                accu = stats[:,1]
+                loss, accu = np.mean(stats, axis=0)[0:2]
                 print("validation loss: ", loss, " accu: ", accu)
 
             if idx == 0 or idx % report_step == 0:
