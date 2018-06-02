@@ -16,7 +16,7 @@ from keras_layers import ConvCapsuleLayer, DeconvCapsuleLayer, Mask, Length
 def CapsNetR3(input_layer, n_class=2):
     # Layer 1: Just a conventional Conv2D layer
     _, H, W, C = input_layer.get_shape()
-    input_layer = layers.Reshape((H.value, W.value, 1, 1))(input_layer)
+    input_layer = layers.Reshape((H.value, W.value, 1))(input_layer)
     conv1 = layers.Conv2D(filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='conv1')(input_layer)
 
     # Reshape layer to be 1 capsule x [filters] atoms
