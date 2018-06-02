@@ -30,8 +30,8 @@ def main():
     data, label = load_data("./dataset/imgs", "./dataset/masks")
     print("data: ", len(data), " shape: ", data[0].shape)
     
-    data = np.expand_dims(data, -1)
-    label = np.expand_dims(label, -1)
+    #data = np.expand_dims(data, -1)
+    #label = np.expand_dims(label, -1)
     shape = data[0].shape
 
     input_layer = keras.layers.Input([None, shape[0], shape[1], 1])
