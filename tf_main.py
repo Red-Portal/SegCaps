@@ -4,9 +4,9 @@ import numpy as np
 import random
 import imageio
 import os
-from capsnet import CapsNetR3
+from tf_model import CapsNetR3
 
-def soft_jaccard(output, target, axis=(1, 2, 3), smooth=1e-5):
+def soft_dice(output, target, axis=(1, 2, 3), smooth=1e-5):
     inse = tf.reduce_sum(output * target, axis=axis)
     l = tf.reduce_sum(output * output, axis=axis)
     r = tf.reduce_sum(target * target, axis=axis)
@@ -125,8 +125,8 @@ def main():
     x = tf.expand_dims(x_in , axis=-1)
     y = tf.expand_dims(y_in , axis=-1)
     model = CapsNetR3(x)
-    op_loss = tf.reduce_mean(margin_loss(y, model))
-    op_accu = soft_jaccard(y, model)
+    op_loss = soft_dice(y, model)
+    op_accu = hard_jaccard(y, model)
     optimizer = tf.contrib.opt.NadamOptimizer(lr)
     op_train = optimizer.minimize(op_loss)
     op_out = onehot(model)
