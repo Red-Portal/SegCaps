@@ -39,7 +39,7 @@ def main():
     model = keras.models.Model(inputs=input_layer, outputs=model)
     opt = keras.optimizers.Nadam(lr=lr)
     loss = "binary_crossentropy"#margin_loss(margin=0.4, downweight=0.5, pos_weight=1.0)
-    model.compile(optimizer=opt, loss=loss, metrics=[dice_hard])
+    model.compile(optimizer=opt, loss=loss, metrics=["accuracy"])
     model.fit(data, label,
               validation_split=0.2,
               #validation_step=validation_step,
