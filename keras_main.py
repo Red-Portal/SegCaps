@@ -29,10 +29,10 @@ def hard_jaccard(y_true, y_pred, smooth=1e-5):
     jac = (inter + smooth) / (union + smooth)
     return keras.backend.mean(jac)
 
-def soft_jaccard(y_true, y_pred, smooth=100):
+def soft_dice(y_true, y_pred, smooth=100):
     intersection = keras.backend.sum(keras.backend.abs(y_true * y_pred), axis=-1)
     sum_ = keras.backend.sum(keras.backend.abs(y_true) + keras.backend.abs(y_pred), axis=-1)
-    jac = (intersection + smooth) / (sum_ - intersection + smooth)
+    jac = 2 * (intersection + smooth) / (sum_ + smooth)
     return (1 - jac) * smooth
 
 def onehot(output):
@@ -71,7 +71,7 @@ def main():
     model = keras.models.Model(inputs=input_layer, outputs=model)
     opt = keras.optimizers.Nadam(lr=lr)
     loss = "binary_crossentropy"#margin_loss(margin=0.4, downweight=0.5, pos_weight=1.0)
-    model.compile(optimizer=opt, loss=loss, metrics=[hard_jaccard])
+    model.compile(optimizer=opt, loss=soft_dice, metrics=[hard_jaccard])
     model.fit(data, label,
               validation_split=validation_split,
               #validation_step=validation_step,
