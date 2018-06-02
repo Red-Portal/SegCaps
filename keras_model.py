@@ -85,6 +85,8 @@ def CapsNetR3(input_layer, n_class=2):
     #out_seg = Length(num_classes=n_class, seg=True, name='out_seg')(seg_caps)
     #out_seg = Length(num_classes=n_class, seg=True, name='out_seg')(seg_caps)
 
+    conv1 = layers.Conv2D(filters=32, kernel_size=5, strides=1, padding='same', activation='relu', name='conv-2')(conv1)
+    conv1 = layers.Conv2D(filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='conv-1')(conv1)
     conv1 = layers.Conv2D(filters=1, kernel_size=5, strides=1, padding='same', activation='sigmoid', name='conv_last')(conv1)
     conv1 = layers.Add()([input_layer, conv1])
     return conv1
