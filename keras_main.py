@@ -100,8 +100,8 @@ def main():
     imags = np.concatenate(imags, axis=0)
 
     masks = (masks > 0.5)
-    inter = (masks * label > 0.5)
-    union = (masks + label > 0.5)
+    inter = (masks * test_label > 0.5)
+    union = (masks + test_label > 0.5)
 
     np.save("inter.npy", inter)
     np.save("union.npy", union)
