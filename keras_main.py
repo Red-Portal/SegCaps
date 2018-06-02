@@ -27,8 +27,8 @@ def jaccard_distance(y_true, y_pred, smooth=100):
     IEEE Trans. Pattern Anal. Mach. Intell.. 26. . 10.5244/C.27.32.
     https://en.wikipedia.org/wiki/Jaccard_index
     """
-    intersection = K.sum(K.abs(y_true * y_pred), axis=-1)
-    sum_ = K.sum(K.abs(y_true) + K.abs(y_pred), axis=-1)
+    intersection = keras.backend.sum(keras.backend.abs(y_true * y_pred), axis=-1)
+    sum_ = keras.backend.sum(keras.backend.abs(y_true) + keras.backend.abs(y_pred), axis=-1)
     jac = (intersection + smooth) / (sum_ - intersection + smooth)
     return (1 - jac) * smooth
 
