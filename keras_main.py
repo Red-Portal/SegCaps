@@ -17,9 +17,8 @@ def hard_jaccard(y_true, y_pred, smooth=1e-5):
     inter = y_true * y_pred
     inter = keras.backend.sum(inter, axis=-1)
 
-    union = y_true + y_pred
-    union = keras.backend.cast(keras.backend.greater(union, 0.5), "float32")
-    union = keras.backend.sum(union, axis=-1)
+    total = keras.backend.sum(y_true, axis=-1) + keras.backend.sum(y_pred, axis=-1)
+    union = total - inter
 
     jac = (inter + smooth) / (union + smooth)
     return keras.backend.mean(jac)
