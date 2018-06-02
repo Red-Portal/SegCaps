@@ -9,10 +9,10 @@ from custom_losses import *
 from keras_model import CapsNetR3
 
 def hard_jaccard(y_true, y_pred, smooth=1e-5):
-    intersection = keras.backend.sum(keras.backend.abs(y_true * y_pred), axis=-1)
-    sum_ = keras.backend.sum(keras.backend.abs(y_true) + keras.backend.abs(y_pred), axis=-1)
-    jac = (intersection + smooth) / (sum_ - intersection + smooth)
-    return (1 - jac)
+    # intersection = keras.backend.sum(keras.backend.abs(y_true * y_pred), axis=-1)
+    # sum_ = keras.backend.sum(keras.backend.abs(y_true) + keras.backend.abs(y_pred), axis=-1)
+    # jac = (intersection + smooth) / (sum_ - intersection + smooth)
+    # return (1 - jac)
 
     y_true = keras.backend.batch_flatten(y_true)
     y_true = keras.backend.cast(keras.backend.greater(y_true, 0.5), "float32")
