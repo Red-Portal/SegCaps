@@ -54,13 +54,15 @@ def load_data(data_path, label_path):
 
 def main():
     lr = 0.0001
-    report_step = 50
-    validation_step = 1000
-    total_iteration = 10000
-    batch_size = 1
+    validation_split = 0.2
+    epochs = 1
+    batch_size = 4
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
     print("data: ", len(data), " shape: ", data[0].shape)
+
+    test_data, test_label = load_data("./dataset/test_imgs", "./dataset/test_masks")
+    print("test data: ", len(data), " shape: ", data[0].shape)
     
     data = np.expand_dims(data, -1)
     label = np.expand_dims(label, -1)
@@ -73,23 +75,26 @@ def main():
     loss = "binary_crossentropy"#margin_loss(margin=0.4, downweight=0.5, pos_weight=1.0)
     model.compile(optimizer=opt, loss=loss, metrics=[jaccard_distance])
     model.fit(data, label,
-              validation_split=0.2,
+              validation_split=validation_split,
               #validation_step=validation_step,
               #report_step=report_step,
               batch_size=batch_size,
               shuffle=True,
-              epochs=5)
-    
-    # masks = []
-    # imags = []
-    # for valid_data, valid_label in data_iter.validation():
-    #     masks.append(sess.run(op_out, feed_dict={x_in: valid_data}))
-    #     imags.append(valid_data)
-    # masks = np.concatenate(masks, axis=0)
-    # imags = np.concatenate(imags, axis=0)
+              epochs=epochs)
 
-    # np.save("masks.npy", masks)
-    # np.save("imags.npy", imags)
+    model.evaluate(test_data, test_label, batch_size=1)
+
+    masks = []
+    imags = []
+    for data, label in zip(test_data, test_label):
+        masks.append(model.predict(data))
+        imags.append(data)
+    masks = np.concatenate(masks, axis=0)
+    imags = np.concatenate(imags, axis=0)
+
+    np.save("masks.npy", masks)
+    np.save("imags.npy", imags)
+    print("saved images: ", imags.shape, " masks: ", masks.shape)
 
 if __name__ == "__main__":
     main()
