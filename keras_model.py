@@ -90,5 +90,5 @@ def CapsNetR3(input_layer, n_class=2):
     # Models for training and evaluation (prediction)
     #train_model = models.Model(inputs=x, outputs=out_seg)
     #eval_model = models.Model(inputs=x, outputs=[out_seg, shared_decoder(masked)])
-    return out_seg
+    return conv1 #out_seg
 
