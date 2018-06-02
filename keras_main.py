@@ -29,11 +29,11 @@ def hard_jaccard(y_true, y_pred, smooth=1e-5):
     jac = (inter + smooth) / (union + smooth)
     return keras.backend.mean(jac)
 
-def soft_dice(y_true, y_pred, smooth=100):
+def soft_dice(y_true, y_pred, smooth=1e-5):
     intersection = keras.backend.sum(keras.backend.abs(y_true * y_pred), axis=-1)
     sum_ = keras.backend.sum(keras.backend.abs(y_true) + keras.backend.abs(y_pred), axis=-1)
-    jac = 2 * (intersection + smooth) / (sum_ + smooth)
-    return (1 - jac) * smooth
+    dice = 2 * (intersection + smooth) / (sum_ + smooth)
+    return -dice
 
 def onehot(output):
     return tf.cast(output > 0.5, dtype=tf.float32)
