@@ -8,7 +8,7 @@ import os
 from custom_losses import *
 from keras_model import CapsNetR3
 
-def jaccard_distance(y_true, y_pred, smooth=100):
+def jaccard_distance(y_true, y_pred, smooth=1e-5):
     """Jaccard distance for semantic segmentation, also known as the intersection-over-union loss.
     This loss is useful when you have unbalanced numbers of pixels within an image
     because it gives all classes equal weight. However, it is not the defacto
@@ -27,10 +27,14 @@ def jaccard_distance(y_true, y_pred, smooth=100):
     IEEE Trans. Pattern Anal. Mach. Intell.. 26. . 10.5244/C.27.32.
     https://en.wikipedia.org/wiki/Jaccard_index
     """
-    intersection = keras.backend.sum(keras.backend.abs(y_true * y_pred), axis=-1)
-    sum_ = keras.backend.sum(keras.backend.abs(y_true) + keras.backend.abs(y_pred), axis=-1)
-    jac = (intersection + smooth) / (sum_ - intersection + smooth)
-    return jac * smooth
+    y_true = keras.backend.batch_flatten(y_true)
+    y_pred = keras.backend.batch_flatten(y_pred)
+    y_true = keras.backend.cast(keras.backend.greater(y_true), "float32")
+    y_pred = keras.backend.cast(keras.backend.greater(y_pred), "float32")
+    inter = y_true * y_pred
+    union = keras.backend.sum(y_true + y_pred, axis=-1)
+    jac = (inter + smooth) / (union - intersection + smooth)
+    return jac
 
 def onehot(output):
     return tf.cast(output > 0.5, dtype=tf.float32)
