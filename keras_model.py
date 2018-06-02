@@ -26,7 +26,7 @@ def CapsNetR3(input_layer, n_class=2):
     # Layer 1: Primary Capsule: Conv cap with routing 1
     # primary_caps = ConvCapsuleLayer(kernel_size=5, num_capsule=2, num_atoms=16, strides=2, padding='same',
     #                                 routings=1, name='primarycaps')(conv1_reshaped)
-    primary_caps = ConvCapsuleLayer(kernel_size=5, num_capsule=16, num_atoms=8, strides=1, padding='same',
+    primary_caps = ConvCapsuleLayer(kernel_size=5, num_capsule=8, num_atoms=8, strides=1, padding='same',
                                     routings=1, name='primarycaps')(conv1_reshaped)
 
     # Layer 2: Convolutional Capsule
