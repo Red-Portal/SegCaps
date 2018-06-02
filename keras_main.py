@@ -10,6 +10,7 @@ from keras_model import CapsNetR3
 
 def hard_jaccard(y_true, y_pred, smooth=1e-5):
     y_true = keras.backend.batch_flatten(y_true)
+    y_true = keras.backend.cast(keras.backend.greater(y_true, 0.5), "float32")
 
     y_pred = keras.backend.batch_flatten(y_pred)
     y_pred = keras.backend.cast(keras.backend.greater(y_pred, 0.5), "float32")
