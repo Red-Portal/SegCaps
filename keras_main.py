@@ -42,8 +42,8 @@ def main():
     model.compile(optimizer=opt, loss=loss, metrics=[dice_hard])
     model.fit(data, label,
               validation_split=0.2,
-              validation_step=validation_step,
-              report_step=report_step,
+              #validation_step=validation_step,
+              #report_step=report_step,
               batch_size=batch_size,
               shuffle=True,
               epochs=5)
