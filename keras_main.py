@@ -56,7 +56,7 @@ def main():
     lr = 0.0001
     validation_split = 0.2
     epochs = 1
-    batch_size = 4
+    batch_size = 1
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
     print("data: ", len(data), " shape: ", data[0].shape)
