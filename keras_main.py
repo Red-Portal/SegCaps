@@ -31,13 +31,12 @@ def jaccard_distance(y_true, y_pred, smooth=1e-5):
     y_pred = keras.backend.batch_flatten(y_pred)
     y_true = keras.backend.cast(keras.backend.greater(y_true, 1.0), "float32")
     y_pred = keras.backend.cast(keras.backend.greater(y_pred, 1.0), "float32")
-    inter = keras.backend.sum(y_true * y_pred)
 
+    inter = y_true * y_pred
     union = y_true + y_pred
     union = keras.backend.cast(keras.backend.greater(union, 1.0), "float32")
-    union = keras.backend.sum(union, axis=-1)
     jac = (inter + smooth) / (union + smooth)
-    return jac
+    return keras.backend.mean(jac)
 
 def onehot(output):
     return tf.cast(output > 0.5, dtype=tf.float32)
