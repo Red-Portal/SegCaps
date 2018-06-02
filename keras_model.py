@@ -15,7 +15,7 @@ from keras_layers import ConvCapsuleLayer, DeconvCapsuleLayer, Mask, Length
 
 def CapsNetR3(input_layer, n_class=2):
     # Layer 1: Just a conventional Conv2D layer
-    conv1 = layers.Conv2D(filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='conv1')(x)
+    conv1 = layers.Conv2D(filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='conv1')(input_layer)
 
     # Reshape layer to be 1 capsule x [filters] atoms
     _, H, W, C = conv1.get_shape()
@@ -86,7 +86,6 @@ def CapsNetR3(input_layer, n_class=2):
 
     # Decoder network.
     _, H, W, C, A = seg_caps.get_shape()
-    y = layers.Input(shape=input_shape[:-1]+(1,))
 
     # Models for training and evaluation (prediction)
     train_model = models.Model(inputs=x, outputs=out_seg)
