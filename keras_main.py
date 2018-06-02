@@ -68,6 +68,9 @@ def main():
     label = np.expand_dims(label, -1)
     shape = data[0].shape
 
+    test_data = np.expand_dims(test_data, -1)
+    test_label = np.expand_dims(test_label, -1)
+
     input_layer = keras.layers.Input(shape=[shape[0], shape[1], 1])
     model = CapsNetR3(input_layer)
     model = keras.models.Model(inputs=input_layer, outputs=model)
@@ -82,8 +85,7 @@ def main():
               shuffle=True,
               epochs=epochs)
 
-    metrics =  model.evaluate(np.array(test_data),
-                              np.array(test_label), batch_size=1, verbose=1)
+    metrics =  model.evaluate(test_data, test_label, batch_size=batch_size, verbose=1)
     print("final metrics: ", metrics)
 
     masks = []
