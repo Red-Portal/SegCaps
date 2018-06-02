@@ -100,7 +100,6 @@ def main():
     imags = np.concatenate(imags, axis=0)
 
     masks = (masks > 0.5)
-    label = (label > 0.5)
     inter = (masks * label > 0.5)
     union = (masks + label > 0.5)
 
