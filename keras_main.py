@@ -51,7 +51,7 @@ def main():
     lr = 0.0001
     validation_split = 0.2
     epochs = 1
-    batch_size = 1
+    batch_size = 8
 
     data, label = load_data("./dataset/imgs", "./dataset/masks")
     print("data: ", len(data), " shape: ", data[0].shape)
@@ -71,7 +71,7 @@ def main():
     model = keras.models.Model(inputs=input_layer, outputs=model)
     opt = keras.optimizers.Nadam(lr=lr)
     loss = "binary_crossentropy"#margin_loss(margin=0.4, downweight=0.5, pos_weight=1.0)
-    model.compile(optimizer=opt, loss=soft_dice, metrics=[hard_jaccard])
+    model.compile(optimizer=opt, loss=loss, metrics=[hard_jaccard])
     model.fit(data, label,
               validation_split=validation_split,
               #validation_step=validation_step,
