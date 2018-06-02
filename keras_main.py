@@ -38,7 +38,7 @@ def main():
     model = CapsNetR3(input_layer)
     model = keras.models.Model(inputs=input_layer, outputs=model)
     opt = keras.optimizers.Nadam(lr=lr)
-    loss = margin_loss(margin=0.4, downweight=0.5, pos_weight=1.0)
+    loss = "binary_crossentropy"#margin_loss(margin=0.4, downweight=0.5, pos_weight=1.0)
     model.compile(optimizer=opt, loss=loss, metrics=[dice_hard])
     model.fit(data, label,
               validation_split=0.2,
