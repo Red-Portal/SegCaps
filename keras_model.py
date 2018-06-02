@@ -83,7 +83,9 @@ def CapsNetR3(input_layer, n_class=2):
 
     # Layer 4: This is an auxiliary layer to replace each capsule with its length. Just to match the true label's shape.
     #out_seg = Length(num_classes=n_class, seg=True, name='out_seg')(seg_caps)
-    out_seg = Length(num_classes=n_class, seg=True, name='out_seg')(primary_caps)
+    seg_caps = ConvCapsuleLayer(kernel_size=1, num_capsule=1, num_atoms=16, strides=1, padding='same',
+                                routings=3, name='seg_caps')(primary_caps)
+    out_seg = Length(num_classes=n_class, seg=True, name='out_seg')(seg_caps)
 
     return out_seg
 
