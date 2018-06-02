@@ -88,7 +88,7 @@ def CapsNetR3(input_layer, n_class=2):
     _, H, W, C, A = seg_caps.get_shape()
 
     # Models for training and evaluation (prediction)
-    train_model = models.Model(inputs=x, outputs=out_seg)
+    #train_model = models.Model(inputs=x, outputs=out_seg)
     #eval_model = models.Model(inputs=x, outputs=[out_seg, shared_decoder(masked)])
-    return train_model
+    return out_seg
 
