@@ -84,7 +84,9 @@ def main():
               batch_size=batch_size,
               shuffle=True,
               epochs=epochs)
+    print("-- saving model")
     model.save("segcaps.h5")
+    print("-- saving model - success")
 
     metrics =  model.evaluate(test_data, test_label, batch_size=batch_size, verbose=1)
     print("final metrics: ", metrics)
