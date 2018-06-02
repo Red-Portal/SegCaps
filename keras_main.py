@@ -27,7 +27,6 @@ def main():
     total_iteration = 10000
     batch_size = 1
 
-
     data, label = load_data("./dataset/imgs", "./dataset/masks")
     print("data: ", len(data), " shape: ", data[0].shape)
     

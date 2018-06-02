@@ -13,9 +13,7 @@ K.set_image_data_format('channels_last')
 
 from keras_layers import ConvCapsuleLayer, DeconvCapsuleLayer, Mask, Length
 
-def CapsNetR3(input_shape, n_class=2):
-    x = layers.Input(shape=input_shape)
-
+def CapsNetR3(input_layer, n_class=2):
     # Layer 1: Just a conventional Conv2D layer
     conv1 = layers.Conv2D(filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='conv1')(x)
 
