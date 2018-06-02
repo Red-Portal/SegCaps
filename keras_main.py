@@ -37,7 +37,7 @@ def main():
     input_layer = keras.layers.Input(shape=[shape[0], shape[1], 1])
     model = CapsNetR3(input_layer)
     model = keras.models.Model(inputs=input_layer, outputs=model)
-    opt = keras.Optimizers.Nadam(lr=lr)
+    opt = keras.optimizers.Nadam(lr=lr)
     loss = margin_loss(margin=0.4, downweight=0.5, pos_weight=1.0)
     model.compile(optimizer=opt, loss=loss, metrics=[dice_hard])
     model.fit(data, label,
