@@ -34,7 +34,7 @@ def main():
     label = np.expand_dims(label, -1)
     shape = data[0].shape
 
-    input_layer = keras.layers.Input([shape[0], shape[1]])
+    input_layer = keras.layers.Input([None, shape[0], shape[1], 1])
     model = CapsNetR3(input_layer)
     model = keras.models.Model(inputs=input_layer, outputs=model)
     opt = keras.Optimizers.Nadam(lr=lr)
