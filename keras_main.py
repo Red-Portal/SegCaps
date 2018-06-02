@@ -90,9 +90,9 @@ def main():
 
     masks = []
     imags = []
-    for data, label in zip(test_data, test_label):
-        masks.append(model.predict(data))
-        imags.append(data)
+    for idx in range(test_data.shape[0]):
+        masks.append(model.predict(test_data[i:i+1,:,:,:]))
+        imags.append(test_data[i:i+1,:,:,:])
     masks = np.concatenate(masks, axis=0)
     imags = np.concatenate(imags, axis=0)
 
