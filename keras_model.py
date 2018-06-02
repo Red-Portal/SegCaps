@@ -82,14 +82,8 @@ def CapsNetR3(input_layer, n_class=2):
                                 routings=3, name='seg_caps')(up_3)
 
     # Layer 4: This is an auxiliary layer to replace each capsule with its length. Just to match the true label's shape.
-    out_seg = Length(num_classes=n_class, seg=True, name='out_seg')(seg_caps)
+    #out_seg = Length(num_classes=n_class, seg=True, name='out_seg')(seg_caps)
+    out_seg = Length(num_classes=n_class, seg=True, name='out_seg')(primary_caps)
 
-    # Decoder network.
-    _, H, W, C, A = seg_caps.get_shape()
-
-    # Models for training and evaluation (prediction)
-    #train_model = models.Model(inputs=x, outputs=out_seg)
-    #eval_model = models.Model(inputs=x, outputs=[out_seg, shared_decoder(masked)])
-    #conv1 = layers.Conv2D(filters=1, kernel_size=5, strides=1, padding='same', activation='relu', name='conv_last')(conv1)
     return out_seg
 
