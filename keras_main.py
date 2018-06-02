@@ -29,8 +29,8 @@ def jaccard_distance(y_true, y_pred, smooth=1e-5):
     """
     y_true = keras.backend.batch_flatten(y_true)
     y_pred = keras.backend.batch_flatten(y_pred)
-    y_true = keras.backend.cast(keras.backend.greater(y_true), "float32")
-    y_pred = keras.backend.cast(keras.backend.greater(y_pred), "float32")
+    y_true = keras.backend.cast(keras.backend.greater(y_true, 1.0), "float32")
+    y_pred = keras.backend.cast(keras.backend.greater(y_pred, 1.0), "float32")
     inter = y_true * y_pred
     union = keras.backend.sum(y_true + y_pred, axis=-1)
     jac = (inter + smooth) / (union - intersection + smooth)
