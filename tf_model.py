@@ -64,7 +64,7 @@ def CapsNetR3(inputs):
                               padding="same", activation=tf.nn.relu, name="2")
     inputs = tf.layers.conv2d(inputs, filters=32, kernel_size=[3,3],
                               padding="same", activation=tf.nn.relu, name="3")
-    inputs = tf.layers.conv2d(inputs, filters=32, kernel_size=[3,3],
-                              padding="same", activation=tf.sigmoid, name="3")
-
+    inputs = tf.layers.conv2d(inputs, filters=1, kernel_size=[3,3],
+                              padding="same", activation=tf.sigmoid, name="4")
+    inputs = tf.squeeze(inputs)
     return inputs
