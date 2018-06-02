@@ -82,7 +82,10 @@ def main():
               shuffle=True,
               epochs=epochs)
 
-    model.evaluate(test_data, test_label, batch_size=1)
+    for data, label in zip(test_data, test_label):
+        masks.append(model.predict(data))
+        imags.append(data)
+    model.evaluate(np.array(test_data), np.array(test_label), batch_size=1)
 
     masks = []
     imags = []
