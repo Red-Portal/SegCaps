@@ -64,12 +64,11 @@ def main():
     test_data, test_label = load_data("./dataset/test_imgs", "./dataset/test_masks")
     print("test data: ", len(data), " shape: ", data[0].shape)
     
-    data = np.expand_dims(np.array(data), -1)
-    label = np.expand_dims(np.array(label), -1)
+    data = np.array(data)
+    label = np.array(label)
+    test_data = np.array(test_data)
+    test_label = np.array(test_label)
     shape = data[0].shape
-
-    test_data = np.expand_dims(np.array(test_data), -1)
-    test_label = np.expand_dims(np.array(test_label), -1)
 
     input_layer = keras.layers.Input(shape=[shape[0], shape[1], 1])
     model = CapsNetR3(input_layer)
@@ -94,8 +93,8 @@ def main():
     masks = []
     imags = []
     for i in range(test_data.shape[0]):
-        masks.append(model.predict(test_data[i:i+1,:,:,:]))
-        imags.append(test_data[i:i+1,:,:,:])
+        masks.append(model.predict(test_data[i,:,:]))
+        imags.append(test_data[i,:,:])
     masks = np.concatenate(masks, axis=0)
     imags = np.concatenate(imags, axis=0)
 

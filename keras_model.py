@@ -15,6 +15,8 @@ from keras_layers import ConvCapsuleLayer, DeconvCapsuleLayer, Mask, Length
 
 def CapsNetR3(input_layer, n_class=2):
     # Layer 1: Just a conventional Conv2D layer
+    _, H, W, C = input_layer.get_shape()
+    input_layer = layers.Reshape((H.value, W.value, 1, 1))(conv1)
     conv1 = layers.Conv2D(filters=16, kernel_size=5, strides=1, padding='same', activation='relu', name='conv1')(input_layer)
 
     # Reshape layer to be 1 capsule x [filters] atoms
@@ -24,7 +26,7 @@ def CapsNetR3(input_layer, n_class=2):
     # Layer 1: Primary Capsule: Conv cap with routing 1
     # primary_caps = ConvCapsuleLayer(kernel_size=5, num_capsule=2, num_atoms=16, strides=2, padding='same',
     #                                 routings=1, name='primarycaps')(conv1_reshaped)
-    primary_caps = ConvCapsuleLayer(kernel_size=5, num_capsule=8, num_atoms=16, strides=1, padding='same',
+    primary_caps = ConvCapsuleLayer(kernel_size=5, num_capsule=16, num_atoms=8, strides=1, padding='same',
                                     routings=1, name='primarycaps')(conv1_reshaped)
 
     # Layer 2: Convolutional Capsule
@@ -85,7 +87,7 @@ def CapsNetR3(input_layer, n_class=2):
 
     # Layer 4: This is an auxiliary layer to replace each capsule with its length. Just to match the true label's shape.
     #out_seg = Length(num_classes=n_class, seg=True, name='out_seg')(seg_caps)
-    seg_caps = ConvCapsuleLayer(kernel_size=1, num_capsule=1, num_atoms=16, strides=1, padding='same',
+    seg_caps = ConvCapsuleLayer(kernel_size=3, num_capsule=1, num_atoms=16, strides=1, padding='same',
                                 routings=3, name='seg_caps')(primary_caps)
     out_seg = Length(num_classes=n_class, seg=True, name='out_seg')(seg_caps)
 
